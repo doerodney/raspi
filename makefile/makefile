@@ -1,7 +1,7 @@
 P = car
 SRCS := main.c car.c
 OBJS = $(subst .c,.o,$(SRCS))
-DEPENDS= $(subst .c,.d,$(SRCS))
+DEPS= $(subst .c,.d,$(SRCS))
 LDLIBS = 
 CC = c99
 CFLAGS = -g -Wall -O3
@@ -9,23 +9,21 @@ CPPFLAGS =
 TARGET_ARCH = 
 
 # Report content of SRCS
-$(info $$SRCS is [${SRCS}])
+# $(info $$SRCS is [${SRCS}])
 
 # Report content of OBJS
-$(info $$OBJS is [${OBJS}])
+# $(info $$OBJS is [${OBJS}])
 
-# Report content of DEPENDS
-$(info $$DEPENDS is [${DEPENDS}])
+# Report content of DEPS
+# $(info $$DEPS is [${DEPS}])
 
 # Build using implicit rule:
 $(P): $(OBJS)
 
 # Include depencency rules (*.d) in the build:
-include $(SRCS:.c=.d)
+include $(DEPS)
 
 # Build dependency files:
-
-
 # Ref: GNU make manual - Automatic Prerequisites 
 # https://www.gnu.org/software/make/manual/html_node/automatic-prerequisites.html
 # This step converts the output of cc -MM main.c:
@@ -45,5 +43,5 @@ include $(SRCS:.c=.d)
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJS) $(DEPENDS) $(P) 
+	$(RM) $(OBJS) $(DEPS) $(P) 
 

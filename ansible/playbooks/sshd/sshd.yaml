@@ -1,0 +1,66 @@
+# ansible-playbook playbooks/sshd/sshd.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: sshd
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Set ChallengeResponseAuthentication to no
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^ChallengeResponseAuthentication\s+yes'
+        replace: 'ChallengeResponseAuthentication no'
+
+    - name: Set PasswordAuthentication to no
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication\s+yes'
+        replace: 'PasswordAuthentication no'
+
+    - name: Set UsePAM to no
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^UsePAM\s+yes'
+        replace: 'UsePAM no'
+    
+    - name: Set PermitRootLogin to no
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin\s+yes'
+        replace: 'PermitRootLogin no'
+
+    - name: Uncomment PermitRootLogin and set to no
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^#PermitRootLogin\s+.+$'
+        replace: 'PermitRootLogin no'
+
+    - name: Set AllowAgentForwarding to yes
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^AllowAgentForwarding\s+no'
+        replace: 'AllowAgentForwarding yes'
+
+    - name: Uncomment AllowAgentForwarding and set to yes
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^#AllowAgentForwarding\s+.+$'
+        replace: 'AllowAgentForwarding yes'
+    
+    - name: Set sudo password rule for user rod
+      copy:
+        src:  rod
+        dest: /etc/sudoers.d
+        owner: root
+        group: root
+        mode: '0440'
+
+
+    - name: Restart the ssh service
+      systemd:
+        name: ssh
+        state: restarted
+
+  
+      

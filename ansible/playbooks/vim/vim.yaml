@@ -1,0 +1,20 @@
+# ansible-playbook playbooks/vim/vim.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: vim
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that vim is installed
+      apt:
+        name: vim
+        state: present
+
+    - name: Copy common .vimrc to home directory
+      copy:
+        src: .vimrc
+        dest: /home/rod
+        owner: rod
+        group: rod
+        mode: u=rw,g=r,o=r

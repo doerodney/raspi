@@ -1,0 +1,21 @@
+# ansible-playbook playbooks/users/users.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: users
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+tasks:
+  - name: Create the docker group
+    group:
+      name: docker
+      state: present
+
+  - name: Update the already-created rod user
+    user:
+      create_home: true
+      groups: adm,docker,lp,sudo,systemd-journal
+      name: rod
+      shell: /bin/bash
+
+

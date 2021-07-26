@@ -1,0 +1,11 @@
+# ansible-playbook playbooks/hostname/hostname.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: hostname
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Set hostname
+      hostname:
+        name: "{{ hostname }}"

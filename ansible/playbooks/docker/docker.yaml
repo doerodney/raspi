@@ -1,0 +1,15 @@
+# ansible-playbook playbooks/docker/docker.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: docker
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that docker is installed
+      apt:
+        name: "{{ item }}" 
+        state: present
+      loop:
+        - curl
+        - docker.io  

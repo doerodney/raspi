@@ -1,0 +1,14 @@
+# ansible-playbook playbooks/golang/golang.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: golang
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that golang is installed
+      apt:
+        name: "{{ item }}" 
+        state: present
+      loop:
+        - golang

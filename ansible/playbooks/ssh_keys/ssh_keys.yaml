@@ -1,0 +1,17 @@
+# ansible-playbook playbooks/ssh_keys/ssh_keys.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: ssh_keys
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Copy .ssh_keys to home .ssh directory
+      authorized_key:
+        user: rod
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - rod_acer_spin_311.pub
+        - rod_acer_spin_713.pub  
+

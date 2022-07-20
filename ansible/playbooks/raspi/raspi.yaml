@@ -1,0 +1,12 @@
+# ansible-playbook playbooks/raspi/raspi.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: raspi
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that libraspberrypi-bin is installed
+      apt:
+        name: libraspberrypi-bin
+        state: present

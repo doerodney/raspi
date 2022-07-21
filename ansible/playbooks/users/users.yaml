@@ -14,7 +14,7 @@
   - name: Update the already-created rod user
     user:
       create_home: true
-      groups: adm,docker,lp,sudo,systemd-journal
+      groups: adm,docker,lp,sudo,systemd-journal,video
       name: rod
       shell: /bin/bash
 

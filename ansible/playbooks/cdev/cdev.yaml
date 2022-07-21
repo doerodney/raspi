@@ -1,0 +1,16 @@
+# ansible-playbook playbooks/cdev/cdev.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: cdev
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that C development tools are installed
+      apt:
+        name: "{{ item }}" 
+        state: present
+      loop:
+        - gcc
+        - gdb
+        - valgrind

@@ -11,4 +11,4 @@
         name: "{{ item }}" 
         state: present
       loop:
-        - golang
+        - golang-go

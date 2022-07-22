@@ -1,0 +1,19 @@
+# ansible-playbook playbooks/helm/helm.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: helm
+  hosts: k8s-master
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Retrieve helm binary archive
+      unarchive: 
+        src: https://get.helm.sh/helm-v3.9.0-linux-arm.tar.gz
+        dest: /tmp
+        creates: /usr/local/bin/helm
+        remote_src: yes
+
+    - name: Move helm binary into place.
+      command: cp /tmp/linux-arm/helm /usr/local/bin/helm
+      args:
+        creates: /usr/local/bin/helm

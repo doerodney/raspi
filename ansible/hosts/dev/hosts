@@ -4,7 +4,14 @@
 # 192.168.1.100 hostname=server02 mac=dc:a6:32:ce:81:76
 192.168.1.122 hostname=server03 mac=dc:a6:32:e5:64:2d
 
-# 192.168.1.105 hostname=top mac=b8:27:eb:3b:ee:19
-# 192.168.1.136 hostname=mid mac=b8:27:eb:0c:43:c6
-# 192.168.1.117 hostname=low mac=b8:27:eb:c9:96:26
-# 192.168.1.148 hostname=util01 mac=b8:27:eb:41:0b:10
+192.168.1.105 hostname=top mac=b8:27:eb:3b:ee:19
+192.168.1.136 hostname=mid mac=b8:27:eb:0c:43:c6
+192.168.1.117 hostname=low mac=b8:27:eb:c9:96:26
+192.168.1.148 hostname=util01 mac=b8:27:eb:41:0b:10
+
+# [k8s]
+# 192.168.1.106
+# 192.168.1.100
+
+[k8s-master]
+192.168.1.106

@@ -1,0 +1,17 @@
+# ansible-playbook playbooks/k8s-module/k8s-module.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: k8s-module
+  hosts: k8s-master
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure Pip is installed
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Ensure OpenShift is installed
+      pip:
+        name: openshift
+        state: present

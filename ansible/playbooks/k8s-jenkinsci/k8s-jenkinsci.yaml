@@ -1,0 +1,21 @@
+# ansible-playbook playbooks/k8s-jenkinsci/k8s-jenkinsci.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: k8s-jenkinsci
+  hosts: k8s-master
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Test for jenkins namespace
+      command: kubectl get namespace
+      register: namespace_result
+
+    - name: Create jenkins namespace (as necessary)
+      command: kubectl create namespace jenkins
+      when: "'jenkins' not in namespace_result.stdout"
+
+    - name: Add jenkins repository
+      kubernetes.core.helm_repository:
+        name: jenkinsci
+        repo_url: https://charts.jenkins.io
+    

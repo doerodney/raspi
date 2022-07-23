@@ -19,3 +19,53 @@
         name: jenkinsci
         repo_url: https://charts.jenkins.io
     
+    - name: Create templates directory on host
+      ansible.builtin.file:
+        path: /etc/templates
+        state: directory
+        mode: '0755'
+
+    - name: Create k8s templates directory on host
+      ansible.builtin.file:
+        path: /etc/templates/k8s
+        state: directory
+        mode: '0755'
+
+    - name: Create helm templates directory on host
+      ansible.builtin.file:
+        path: /etc/templates/helm
+        state: directory
+        mode: '0755'
+
+    - name: Copy jenkins persistent volume template to host
+      ansible.builtin.copy:
+        src: jenkins-volume.yaml
+        dest: /etc/templates/k8s/jenkins-volume.yaml
+        owner: root
+        group: sudo
+        mode: '0644'
+    
+    - name: Copy jenkins service account template to host
+      ansible.builtin.copy:
+        src: jenkins-sa.yaml
+        dest: /etc/templates/k8s/jenkins-sa.yaml
+        owner: root
+        group: sudo
+        mode: '0644'
+
+    - name: Copy jenkins value template to host
+      ansible.builtin.copy:
+        src: jenkins-values.yaml
+        dest: /etc/templates/helm/jenkins-sa.yaml
+        owner: root
+        group: sudo
+        mode: '0644'
+
+    - name: Create jenkins volume
+      command: kubectl apply -f /etc/templates/k8s/jenkins-volume.yaml
+
+    - name: Create jenkins service account
+      command: kubectl apply -f /etc/templates/k8s/jenkins-sa.yaml
+
+    - name: Install jenkins with helm
+      command: helm install jenkins -n jenkins -f /etc/templates/helm/jenkins-sa.yaml jenkinsci/jenkins

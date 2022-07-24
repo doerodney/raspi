@@ -1,0 +1,29 @@
+# ansible-playbook playbooks/native-jenkinsci/native-jenkinsci.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: native-jenkinsci
+  hosts: native-jenkins-master
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that Java Runtime Environment is installed
+      apt:
+        name: openjdk-11-jre
+        state: present
+    
+    - name: Copy jenkins key
+      ansible.builtin.copy:
+        src: jenkins.io.key 
+        dest: /usr/share/keyrings/jenkins-keyring.asc
+        mode: '0644'
+      
+    - name: Ensure that jenkins is installed
+      apt:
+        name: jenkins
+        state: present
+    
+    - name: Start jenkins, and enable
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
+        enabled: yes

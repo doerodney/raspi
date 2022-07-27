@@ -1,0 +1,56 @@
+# ansible-playbook playbooks/gitlab/gitlab.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+# Source:  Mastering Gitlab 12
+# Problem: There are no Gitlab images for arm64.
+
+- name: gitlab
+  hosts: gitlab-primary
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Create directories for gitlab
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+      loop:
+        - /srv/gitlab/config
+        - /srv/gitlab/data
+        - /srv/gitlab/logs
+
+    - name: Run gitlab community edition container
+      community.docker.docker_container:
+        hostname: "{{ hostname }}"
+        published_ports:
+          - "443:443"
+          - "80:80"
+          - "22:22"
+        volumes:
+          - "/srv/gitlab/config:/etc/gitlab"
+          - "/srv/gitlab/logs:/var/log/gitlab"
+          - "/srv/gitlab/data:/var/opt/gitlab"
+        restart_policy: always
+        detach: yes
+        name: gitlab-ce
+        image: gitlab/gitlab-ce:latest
+
+
+# sudo mkdir -p /srv/gitlab/config
+# sudo mkdir -p /srv/gitlab/data
+# sudo mkdir -p /srv/gitlab/logs
+#
+# sudo docker run \
+#   --hostname $(hostname)
+#   --publish 443:443
+#   --publish 80:80
+#   --publish 22:22
+#   --name gitlab
+#   --volume /srv/gitlab/config:/etc/gitlab
+#   --volume /srv/gitlab/logs:/var/log/gitlab
+#   --volume /srv/gitlab/data:/var/opt/gitlab
+#   --detach
+#   --restart always
+#   gitlab/gitlab-ce:latest
+#

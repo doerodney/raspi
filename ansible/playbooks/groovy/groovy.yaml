@@ -1,0 +1,23 @@
+# ansible-playbook playbooks/groovy/groovy.yaml --verbose --user rod --private-key ~/.ssh/id_rsa  --inventory $(pwd)/hosts/dev
+
+- name: groovy
+  hosts: raspi
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Ensure that groovy and its dependencies are installed
+      apt:
+        name: "{{ item }}" 
+        state: present
+      loop:
+        - openjdk-8-jdk
+        - groovy
+
+    - name: Create symbolic link from open-jdk to default-java
+      file:
+        src: /usr/lib/jvm/java-1.8.0-openjdk-arm64
+        dest: /usr/lib/jvm/default-java
+        owner: root
+        group: root
+        state: link

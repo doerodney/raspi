@@ -81,9 +81,8 @@ This command shows indicates the status of the ssh service on the Pi.
 These steps pull the latest versions of installed software:
 1.  Execute: sud apt update
     1.  This step identifies packages that can be upgraded.
-2.  Execute: sudo apt upgrade
-    1.  Specify `Y` to continue.
-    2.  This can take a while, so go get lunch.
+2.  Execute: sudo apt upgrade -y
+    * This can take a while, so go get lunch.
    
 ## Add Pi to Ansible hosts
 This step adds information that you collected to your Ansible hosts file.  This allows it to be configured by Ansible, and allows ad-hoc fleet-wide commands to be executed.  

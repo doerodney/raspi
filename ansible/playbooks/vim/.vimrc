@@ -12,7 +12,7 @@ au BufNewFile,BufRead *.py
   \ autoindent
   \ fileformat=unix
 
-au BufNewFile,BufRead *.c,*.cpp,*.css,*.go,*.h,*.hpp,*.html,*.js,*.json,*.lua,*.pl,*.pm,*.rs,*.sh,*.t,*.txt,*.xml,*.yaml,*.yml
+au BufNewFile,BufRead *.c,*.cpp,*.css,*.go,*.groovy,*.h,*.hpp,*.html,*.js,*.json,*.lua,*.pl,*.pm,*.rs,*.sh,*.t,*.txt,*.xml,*.yaml,*.yml
   \ set tabstop=2
   \ softtabstop=2
   \ shiftwidth=2
